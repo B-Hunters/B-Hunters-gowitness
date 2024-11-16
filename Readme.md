@@ -27,5 +27,5 @@ docker run -d  -v $(pwd)/b-hunters.ini:/etc/b-hunters/b-hunters.ini bormaa/b-hun
 
 ## How it works
 
-B-Hunters-Dirsearch receives the Domain from B-Hunters-subrecon module and get image and other data of website
+B-Hunters-Gowitness receives the Domain from B-Hunters-subrecon module and get image and other data of website
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/bormaa)
