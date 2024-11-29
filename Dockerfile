@@ -10,7 +10,7 @@ RUN apt update && apt install -y \
 
 # Set environment variable for Chromium path
 ENV GOWITNESS_BROWSER_PATH=/usr/bin/chromium-browser
-RUN pip install b-hunters==1.1.4 --break-system-packages
+RUN pip install b-hunters==1.1.7 --break-system-packages
 # Set up GoWitness entry point to simplify usage
 # ENTRYPOINT ["gowitness"]
 WORKDIR /app/service/
