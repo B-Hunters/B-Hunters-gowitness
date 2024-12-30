@@ -9,6 +9,8 @@ import tempfile
 import requests
 import re
 import glob
+from bson.objectid import ObjectId
+
 class gowitnessm(BHunters):
     """
     B-Hunters Gowitness developed by Bormaa
@@ -52,23 +54,26 @@ class gowitnessm(BHunters):
         subdomain = task.payload["subdomain"]
         subdomain = re.sub(r'^https?://', '', subdomain)
         subdomain = subdomain.rstrip('/')
+        scan_id = task.payload_persistent["scan_id"]
+        report_id=task.payload_persistent["report_id"]
         url = task.payload["data"]
         self.log.info("Starting processing new url " +url)
         self.update_task_status(subdomain,"Started")
         url = re.sub(r'^https?://', '', url)
         url = url.rstrip('/')
         try:
-            db = self.db
-            collection = db["domains"]
-
             screenshot,jsondata=self.scan(task.payload["data"])
-            domain_document = collection.find_one({"Domain": subdomain})
+            self.waitformongo()
+            db = self.db
+            collection = db["reports"]
+
+            domain_document = collection.find_one({"_id": ObjectId(report_id)})
             if domain_document:
                 if "data" in domain_document and "gowitness" in domain_document["data"]:
-                    collection.update_one({"Domain": subdomain}, {"$push": {"data.gowitness": jsondata}})
+                    collection.update_one({"_id": ObjectId(report_id)}, {"$push": {"data.gowitness": jsondata}})
                 else:
-                    collection.update_one({"Domain": subdomain}, {"$set": {"data.gowitness": jsondata}})
-                collection.update_one({"Domain": subdomain}, {"$set": {"Screenshot": screenshot}})
+                    collection.update_one({"_id": ObjectId(report_id)}, {"$set": {"data.gowitness": jsondata}})
+                collection.update_one({"_id": ObjectId(report_id)}, {"$set": {"Screenshot": screenshot}})
             self.update_task_status(subdomain,"Finished")
         except Exception as e:
             self.update_task_status(subdomain,"Failed")
