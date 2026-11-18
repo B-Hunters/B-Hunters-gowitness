@@ -14,7 +14,7 @@ ENV GOWITNESS_BROWSER_PATH=/usr/bin/chromium-browser
 # release: a worker that calls auth_headers(task) against a release that
 # does not have it fails inside the scan.  scripts/build_workers.sh passes
 # the local wheel; the default is the published release.
-ARG B_HUNTERS_WHEEL=b-hunters==1.4.1
+ARG B_HUNTERS_WHEEL=b-hunters==1.5.1
 RUN pip install ${B_HUNTERS_WHEEL} --break-system-packages
 # Set up GoWitness entry point to simplify usage
 # ENTRYPOINT ["gowitness"]
